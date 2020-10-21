@@ -1,0 +1,1031 @@
+{
+	"info": {
+		"_postman_id": "f1d7faa3-f886-48dc-8d3e-7a253daf1680",
+		"name": "my Homework2020",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET-PostManBDD",
+			"item": [
+				{
+					"name": "Install PostmanBDD",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40d23476-394d-4fa2-8ae4-d2e9a5911ed5",
+								"exec": [
+									"postman.setGlobalVariable('postmanBDD', responseBody);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://bigstickcarpet.com/postman-bdd/dist/postman-bdd.js",
+							"protocol": "http",
+							"host": [
+								"bigstickcarpet",
+								"com"
+							],
+							"path": [
+								"postman-bdd",
+								"dist",
+								"postman-bdd.js"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "POST- Create LandLords",
+			"item": [
+				{
+					"name": "Create new landlord",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "88ede7a8-b5ee-4ef7-b9a1-1829173f95fe",
+								"exec": [
+									"const today = new Date();\r",
+									"const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\r",
+									"const time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\r",
+									"const dateTime = date+' '+time;\r",
+									"console.log(dateTime);\r",
+									"pm.environment.set(\"Today\", dateTime);\r",
+									"\r",
+									"let fakeValue = Math.random().toString(36).substring(8);\r",
+									"pm.environment.set(\"fakeFirstName\", fakeValue);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "2503b6f3-585f-4267-83d2-054ce110bce8",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('Creating a new landlord', function() {\r",
+									"    // Assertion\r",
+									"    it('should return 201', function() {\r",
+									"        response.should.have.status(201);\r",
+									"    });\r",
+									"    pm.test(\"Status code is 201\", function () {\r",
+									"        pm.response.to.have.status(201);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"// Assertion\r",
+									"    it ('should return firstName', function(){\r",
+									"           response.body.should.have.property (\"firstName\").and.equal (environment.fakeFirstName);\r",
+									"         \r",
+									"    });\r",
+									"\r",
+									"    pm.environment.set(\"landlordId\", response.body.id);\r",
+									"\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"{{fakeFirstName}}\",\r\n  \"lastName\": \"{{LastName}}\",\r\n  \"trusted\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/landlords",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GET- Particular landlords",
+			"item": [
+				{
+					"name": "read particular landlord",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0bab5369-aed8-4cc2-a611-3d2e96f14aef",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('Get particular landlord info', function() {\r",
+									"    // Assertion\r",
+									"    it('should return 200', function() {\r",
+									"        response.should.have.status(200);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"// Assertion\r",
+									"    it ('should return firstName', function(){\r",
+									"           response.body.should.have.property (\"firstName\").and.equal (environment.fakeFirstName);\r",
+									"         });\r",
+									"\r",
+									"   // Assertion\r",
+									"    it ('should return lastName', function(){\r",
+									"           response.body.should.have.property (\"lastName\").and.equal (environment.LastName);\r",
+									"         });\r",
+									"    \r",
+									"});\r",
+									"    \r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "33b2b881-8c5a-4bea-9998-135d37886072",
+								"exec": [
+									"const today = new Date();\r",
+									"const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\r",
+									"const time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\r",
+									"const dateTime = date+' '+time;\r",
+									"console.log(dateTime);\r",
+									"pm.environment.set(\"Today\", dateTime);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{landlordId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{landlordId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "particular landlord invaildlandLordID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0dd099b5-74c7-4b3f-b129-896457c46449",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('Get invallandlordId', function() {\r",
+									"    // Assertion\r",
+									"    it('should return 404', function() {\r",
+									"        response.should.have.status(404);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8d6a8a33-33c9-4536-adfb-18c91122b519",
+								"exec": [
+									"const today = new Date();\r",
+									"const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\r",
+									"const time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\r",
+									"const dateTime = date+' '+time;\r",
+									"console.log(dateTime);\r",
+									"pm.environment.set(\"Today\", dateTime);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{ABCDER1234}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{ABCDER1234}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invaild landlords URL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d8afe62f-1c7e-4963-a445-6eede0c4c884",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('Get invalid landlordId', function() {\r",
+									"    // Assertion\r",
+									"    it('should return 404', function() {\r",
+									"        response.should.have.status(404);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a26ccf1a-a393-496b-ad81-b4e28edb3883",
+								"exec": [
+									"const today = new Date();\r",
+									"const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\r",
+									"const time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\r",
+									"const dateTime = date+' '+time;\r",
+									"console.log(dateTime);\r",
+									"pm.environment.set(\"Today\", dateTime);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/landlods/{{landlordId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlods",
+								"{{landlordId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "PUT-Upadate landlords",
+			"item": [
+				{
+					"name": "Create for landlords updateID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0f945569-b8dd-462b-ac07-05fa4167634f",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"updeteLDId\", response.body.id);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a775f67f-aa68-4d6a-a957-bae8aaa4b2c8",
+								"exec": [
+									"const today = new Date();\r",
+									"const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\r",
+									"const time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\r",
+									"const dateTime = date+' '+time;\r",
+									"console.log(dateTime);\r",
+									"//pm.environment.set(\"today\", dateTime);\r",
+									"\r",
+									"// create a fake name\r",
+									"let fakeValue = Math.random().toString(36).substring(2);\r",
+									"pm.environment.set(\"fakeFirstName\", fakeValue);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"{{fakeFirstName}}\",\r\n  \"lastName\": \"{{LastName}}\",\r\n  \"trusted\": false\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/landlords",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update  particular name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c4ce638a-0bb1-45d6-9169-2fb2de9de8a7",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('update particular landlord', function() {\r",
+									"    \r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"   \r",
+									"    });\r",
+									"    \r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Mohammad update\",\r\n    \"lastName\": \"uddin hossain\",\r\n    \"trusted\": false,\r\n    \"apartments\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{updeteLDId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{updeteLDId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify after update value",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "841a02ec-3b68-44d5-991f-74c04fad1eea",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('Landlord names should be updated after PUT', function() {\r",
+									"    // Assertion\r",
+									"    it('should return 200', function() {\r",
+									"        response.should.have.status(200);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"// Assertion\r",
+									"    it ('should return firstName', function(){\r",
+									"           response.body.should.have.property (\"firstName\").and.equal (\"Mohammad update\");\r",
+									"         });\r",
+									"\r",
+									"   // Assertion\r",
+									"    it ('should return lastName', function(){\r",
+									"           response.body.should.have.property (\"lastName\").and.equal (\"uddin hossain\");\r",
+									"         });\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{updeteLDId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{updeteLDId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GET-All LandLords info",
+			"item": [
+				{
+					"name": "GET  Retrive all landlords data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a1249bd9-e2a3-42a6-a49d-4207bf8b2722",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"describe('get all landlords', function() {\r",
+									"    // Assertion\r",
+									"    it('should return 200', function() {\r",
+									"        response.should.have.status(200);\r",
+									"    });\r",
+									"// Assertion\r",
+									"    it ('verify the list of landlord', function(){\r",
+									"         let listOfLanlords = response.body;\r",
+									"         console.log (listOfLanlords);\r",
+									"         console.log (listOfLanlords.length);\r",
+									"         assert.lengthOf(listOfLanlords, listOfLanlords.length);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('deleted landlord should not return in response', function(){\r",
+									"        pm.expect(pm.response.text()).to.not.include(environment.deletedLandlordId);\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/landlords",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "POST Create Apartment",
+			"item": [
+				{
+					"name": "Add new landlords Apartment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7645c7b4-5630-4f0b-ab81-e5349bc694d0",
+								"exec": [
+									"const today = new Date();\r",
+									"const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\r",
+									"const time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\r",
+									"const dateTime = date+' '+time;\r",
+									"console.log(dateTime);\r",
+									"pm.environment.set(\"Today\", dateTime);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "d76d45a8-298d-4dd0-a67c-c319f8b17d22",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('Creating a new apartments', function() {\r",
+									"    // Assertion\r",
+									"    it('should return 201', function() {\r",
+									"        response.should.have.status(201);\r",
+									"    });\r",
+									"    pm.test(\"Status code is 201\", function () {\r",
+									"        pm.response.to.have.status(201);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"\r",
+									"pm.environment.set(\"apartmentId\", response.body.id);\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"address\": \"380 pine st\",\r\n  \"price\": 1700,\r\n  \"square\": 800,\r\n  \"features\": [\r\n    \"Single Family\"\r\n  ],\r\n \r\n  \"active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{landlordId}}/apartments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{landlordId}}",
+								"apartments"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GET Particular Apartment Number",
+			"item": [
+				{
+					"name": "GET Particular landlords Apartment with id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "59eccdcf-f4cb-47ae-8a6d-ef708721fffc",
+								"exec": [
+									"const today = new Date();\r",
+									"const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\r",
+									"const time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\r",
+									"const dateTime = date+' '+time;\r",
+									"console.log(dateTime);\r",
+									"pm.environment.set(\"Today\", dateTime);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c21f9419-57da-4f06-a334-499e110fe821",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('Particular landlords apartments', function() {\r",
+									"    \r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"\r",
+									"\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{landlordId}}/apartments/{{apartmentId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{landlordId}}",
+								"apartments",
+								"{{apartmentId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "PUT Update Apartment numbers",
+			"item": [
+				{
+					"name": "GET Make landlords and ApartmentID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7fcf6274-2f1f-4804-bac6-20e2c5628f53",
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e4dfb7b-918a-4e0c-97db-7359b1ab8893",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"ApartmentUpdateID\", response.body.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"address\": \"450 pine st\",\r\n  \"price\": 1800,\r\n  \"square\": 900,\r\n  \"features\": [\r\n    \"Single Family\"\r\n  ],\r\n  \"active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{landlordId}}/apartments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{landlordId}}",
+								"apartments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Update landlords ApartmentID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "737e044d-06dc-4273-b65b-6204ac55aef8",
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c9cb03b6-69fb-43a3-bdb2-45007dacd3d3",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('update particular landlord', function() {\r",
+									"    \r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"   \r",
+									"    });\r",
+									"    \r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"address\": \"450 Sutter Ave\",\r\n  \"price\": 1800,\r\n  \"square\": 900,\r\n  \"features\": [\r\n    \"Single Family\"\r\n  ],\r\n  \"active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{landlordId}}/apartments/{{ApartmentUpdateID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{landlordId}}",
+								"apartments",
+								"{{ApartmentUpdateID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DEL-DELETE Particular LandLords",
+			"item": [
+				{
+					"name": "GET Make landlords and ApartmentID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "311769e1-7d37-4751-a6c2-f4cb5f229852",
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "661d2610-1e05-48dc-985e-c6d528953d70",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"\r",
+									"pm.environment.set(\"deleteAPID\", response.body.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"address\": \"450 pine st\",\r\n  \"price\": 1800,\r\n  \"square\": 900,\r\n  \"features\": [\r\n    \"Single Family\"\r\n  ],\r\n  \"active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{landlordId}}/apartments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{landlordId}}",
+								"apartments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete landlords  deletedLdlId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e47dbd3d-c3e7-4118-b5d7-25f7f69fb28b",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('Delete paricular landlord', function() {\r",
+									"    // Assertion\r",
+									"    it('should return 200', function() {\r",
+									"        response.should.have.status(200);\r",
+									"    });\r",
+									"    \r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });  \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{landlordId}}/apartments/{{deleteAPID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{landlordId}}",
+								"apartments",
+								"{{deleteAPID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GET All LandLords Apartment Info",
+			"item": [
+				{
+					"name": "GET all landlords Apartment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a2130138-3ab5-49e8-8030-16ca4dde9f0d",
+								"exec": [
+									"const today = new Date();\r",
+									"const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\r",
+									"const time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\r",
+									"const dateTime = date+' '+time;\r",
+									"console.log(dateTime);\r",
+									"pm.environment.set(\"Today\", dateTime);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "01e06db1-e9ef-4046-a6cc-0433c556bcb9",
+								"exec": [
+									"eval(globals.postmanBDD);\r",
+									"\r",
+									"describe('All landlords apartments info', function() {\r",
+									"   \r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"    // Assertion\r",
+									"    it ('should return JSON in header as contentType', function(){\r",
+									"         response.should.have.header('content-type', 'application/json;charset=UTF-8');\r",
+									"    });\r",
+									"\r",
+									"\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/landlords/{{landlordId}}/apartments",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"landlords",
+								"{{landlordId}}",
+								"apartments"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0b466e5a-07ad-4a72-a3b8-84f64e0df771",
+				"type": "text/javascript",
+				"exec": [
+					"postman.setGlobalVariable(\"baseURL\",\"http://localhost:8080\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "323d86db-7c88-486a-a553-65f5898fb4a0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
